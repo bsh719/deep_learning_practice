@@ -80,7 +80,7 @@ def main():
 
             optimizer.zero_grad()
             loss1 = criterion(outs, imgs.reshape(-1, 784))
-            loss2 = -0.5 * torch.sum(1 + logvar - mu * mu - logvar.exp())
+            loss2 = -torch.sum(1 + logvar - mu * mu - torch.exp(logvar)) / 2
             loss = loss1 + loss2
             loss.backward()
             optimizer.step()
@@ -95,7 +95,7 @@ def main():
             outs = vae.decode(z)
 
             loss1 = criterion(outs, imgs.reshape(-1, 784))
-            loss2 = -0.5 * torch.sum(1 + logvar - mu * mu - logvar.exp())
+            loss2 = -torch.sum(1 + logvar - mu * mu - torch.exp(logvar)) / 2
             avg_loss += (loss1 + loss2) * ratio
 
         print(f"\nepoch: {epc+1}, average loss: {avg_loss}\n")

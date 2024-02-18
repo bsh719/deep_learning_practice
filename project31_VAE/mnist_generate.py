@@ -87,7 +87,7 @@ def main():
 
         # test
         avg_loss = 0.0
-        ratio = 1 / len(test_loader)
+        ratio = 1 / 10000
 
         for imgs, lbls in tqdm(test_loader):
             mu, logvar = vae.encode(imgs)
@@ -98,13 +98,13 @@ def main():
             loss2 = -torch.sum(1 + logvar - mu * mu - torch.exp(logvar)) / 2
             avg_loss += (loss1 + loss2) * ratio
 
-        print(f"\nepoch: {epc+1}, average loss: {avg_loss}\n")
+        print(f"\nepoch: {epc+1}, average loss: {avg_loss:.4f}\n")
         avg_loss = 0.0
 
         # visualize
-        fig, ax = plt.subplots(nrows=2, ncols=3)
+        fig, ax = plt.subplots(nrows=2, ncols=5)
         
-        for i in range(3):
+        for i in range(5):
             img1 = test_dataset[random.randint(0, 9999)][0]
             ax[0][i].imshow(img1.reshape(28, 28))
 
